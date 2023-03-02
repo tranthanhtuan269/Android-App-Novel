@@ -49,7 +49,7 @@ const App = () => {
               <FontAwesome5 
                 name={iconName}
                 color={color}
-                size={IconSize}
+                size={IconSize} 
               />
             )
           }
