@@ -15,11 +15,12 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import HomeComponent from './HomeComponent';
 
 const Home = () => {
   return (
     <View>
-        <Text>Home 1</Text>
+        <HomeComponent />
     </View>
   )
 }
