@@ -5,30 +5,76 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  ActivityIndicator,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  TouchableWithoutFeedback
 } from 'react-native';
 
-const HomeComponent = () => {
+const HomeComponent = (props) => {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [selectedId, setSelectedId] = useState();
+
+  const getNovels = async () => {
+    try {
+      const response = await fetch(props.link);
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getNovels();
+  }, []);
+
+  function actionOnRow(item) {
+    console.log('Selected Item :',item);
+  }
   return (
     <View style={styles.HomeComponentContainer}>
       <View style={styles.HomeComponentTop}>
         <View style={styles.HomeComponentTitle}>
-            <Text style={styles.HomeComponentTitleText}>Truyện HOT</Text>
+            <Text style={styles.HomeComponentTitleText}>{props.title}</Text>
         </View>
         <View style={styles.HomeComponentMore}>
+          <View>
             <Text style={styles.HomeComponentTitleMore}>Thêm &gt;</Text>
+          </View>
         </View>
       </View>
       
-      <View>
+      <View style={styles.HomeComponentContent}>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <TouchableWithoutFeedback onPress={ () => this.actionOnRow(item)}>
+                  <View>
+                     <Text>{item.id}</Text>
+                     <Text>{item.title}</Text>
+                  </View>
+             </TouchableWithoutFeedback>
+            )}
+            extraData={selectedId}
+            horizontal={false}
+            numColumns={3}
+            style={{ flexDirection: 'column' }}
+            columnWrapperStyle={{justifyContent: 'space-between'}}
+          />
+        )}
       </View>
     </View>
   )
@@ -37,9 +83,14 @@ const HomeComponent = () => {
 const styles = StyleSheet.create({
   HomeComponentContainer: {
     width: '100%',
-    height: 200
+    height: 400
   },
   HomeComponentTop: {
+    width: '100%',
+    flexDirection: 'row',
+    margin: 5
+  },
+  HomeComponentContent: {
     flex: 1,
     flexDirection: 'row',
     margin: 5
@@ -50,7 +101,7 @@ const styles = StyleSheet.create({
   HomeComponentMore: {
     flex: 1,
     alignItems: 'flex-end',
-    paddingEnd: 3
+    paddingEnd: 16,
   },
   HomeComponentTitleText: {
     fontFamily: 'TiltNeon-Regular',
@@ -59,7 +110,26 @@ const styles = StyleSheet.create({
   },
   HomeComponentTitleMore: {
     fontFamily: 'TiltNeon-Regular',
-    fontSize: 16
+    fontSize: 16,
+  },
+  HomeComponentFlatList: {
+    flexDirection: 'column'
+  },
+  HomeComponentFlatListItem: {
+    width:'33%',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  HomeComponentFlatListItemImage: {
+    width: 120,
+    height: 150,
+    borderRadius: 6
+  },
+  HomeComponentFlatListItemLabel: {
+    marginTop: 5,
+    marginBottom: 5,
+    fontFamily: 'TiltNeon-Regular',
+    fontSize: 12
   }
 });
 
