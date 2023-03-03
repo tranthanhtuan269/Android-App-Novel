@@ -21,7 +21,6 @@ const Home = () => {
   return (
     <SafeAreaView style={{flex:1}}>
       <HomeComponent title="Truyện HOT" link="https://mocki.io/v1/771410cc-e4e6-44d2-895a-b06d661f6e39" linkMore="https://google.com"/>
-      <HomeComponent title="Truyện SEX" link="https://mocki.io/v1/771410cc-e4e6-44d2-895a-b06d661f6e39" linkMore="https://google.com"/>
     </SafeAreaView>
   )
 }

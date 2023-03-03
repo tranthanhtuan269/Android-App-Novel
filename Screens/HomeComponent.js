@@ -19,6 +19,7 @@ import {
 const HomeComponent = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [test, setTest] = useState(0);
   const [selectedId, setSelectedId] = useState();
 
   const getNovels = async () => {
@@ -38,13 +39,14 @@ const HomeComponent = (props) => {
   }, []);
 
   function actionOnRow(item) {
-    console.log('Selected Item :',item);
+    setTest(item.id + 1)
   }
+
   return (
     <View style={styles.HomeComponentContainer}>
       <View style={styles.HomeComponentTop}>
         <View style={styles.HomeComponentTitle}>
-            <Text style={styles.HomeComponentTitleText}>{props.title}</Text>
+            <Text style={styles.HomeComponentTitleText}>{props.title} {test}</Text>
         </View>
         <View style={styles.HomeComponentMore}>
           <View>
@@ -63,8 +65,8 @@ const HomeComponent = (props) => {
             renderItem={({item}) => (
               <TouchableWithoutFeedback onPress={ () => this.actionOnRow(item)}>
                   <View>
-                     <Text>{item.id}</Text>
-                     <Text>{item.title}</Text>
+                     <Image source={{uri: item.image}} style={styles.HomeComponentFlatListItemImage}/>
+                     <Text>{item.name}</Text>
                   </View>
              </TouchableWithoutFeedback>
             )}
